@@ -1,0 +1,24 @@
+<!-- tweets_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}ツイート一覧{% endblock %}
+
+{% block contents %}
+  <div class="container mt-4">
+    <h2>最新のツイート</h2>
+
+    <a href="{% url 'strategyapp:tweet_create' %}" class="btn btn-primary mb-3">ツイートを投稿する</a>
+
+    <div class="list-group">
+      {% for tweet in tweets %}
+        <div class="list-group-item">
+          <strong>{{ tweet.user.username }}</strong>
+          <p>{{ tweet.content }}</p>
+          <small>{{ tweet.created_at }}</small>
+        </div>
+      {% empty %}
+        <p>まだツイートがありません。</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

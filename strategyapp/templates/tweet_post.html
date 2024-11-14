@@ -1,0 +1,15 @@
+<!-- tweet_post.html -->
+{% extends 'base.html' %}
+
+{% block title %}ツイート投稿{% endblock %}
+
+{% block contents %}
+  <div class="container mt-4">
+    <h2>ツイートを投稿しよう</h2>
+    <form action="{% url 'strategyapp:tweet_create' %}" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">投稿</button>
+    </form>
+  </div>
+{% endblock %}
