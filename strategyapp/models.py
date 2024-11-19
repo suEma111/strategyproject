@@ -58,3 +58,13 @@ class Tweet(models.Model):
 
     def __str__(self):
         return self.content[:50]
+    
+
+class Reply(models.Model):
+    tweet = models.ForeignKey(Tweet, related_name='replies', on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    content = models.TextField(max_length=280)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.content[:20]}"

@@ -1,5 +1,5 @@
 from django import forms
-from .models import StrategyPost, Tweet
+from .models import StrategyPost, Tweet, Reply
 
 class StrategyPostForm(forms.ModelForm):
 
@@ -38,3 +38,11 @@ class ContactForm(forms.Form):
         self.fields['message'].widget.attrs['placeholder'] = \
             'メッセージを入力して下さい'
         self.fields['message'].widget.attrs['class'] = 'form-control'
+
+class ReplyForm(forms.ModelForm):
+    class Meta:
+        model = Reply
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'rows': 2, 'class': 'form-control', 'placeholder': 'コメントを入力してください'}),
+        }

@@ -1,24 +1,50 @@
-<!-- tweets_list.html -->
 {% extends 'base.html' %}
 
 {% block title %}ツイート一覧{% endblock %}
 
 {% block contents %}
-  <div class="container mt-4">
+<div class="container text-center mt-4">
     <h2>最新のツイート</h2>
 
-    <a href="{% url 'strategyapp:tweet_create' %}" class="btn btn-primary mb-3">ツイートを投稿する</a>
+    <a href="{% url 'strategyapp:tweet_create' %}" class="btn btn-primary ms-2">ツイートを投稿する</a>
+    <a href="{% url 'strategyapp:index' %}" class="btn btn-primary ms-2">マイページ</a>
+    <a href="{% url 'strategyapp:contact' %}" class="btn btn-primary ms-2">お問い合わせ</a>
 
-    <div class="list-group">
+    <div class="list-group mt-5">
       {% for tweet in tweets %}
-        <div class="list-group-item">
+        <div class="list-group-item col-lg-8 mx-auto">
           <strong>{{ tweet.user.username }}</strong>
           <p>{{ tweet.content }}</p>
           <small>{{ tweet.created_at }}</small>
+
+          <!-- コメント一覧 -->
+          <div class="mt-3 text-start">
+              <strong>リプライ一覧:</strong>
+              {% for reply in tweet.replies.all %}
+                  <div class="mb-2">
+                      <strong>{{ reply.user.username }}:</strong>
+                      <p>{{ reply.content }}</p>
+                      <small>{{ reply.created_at }}</small>
+                  </div>
+              {% empty %}
+                  <p>まだリプライがありません。</p>
+              {% endfor %}
+          </div>
+
+          <!-- コメント投稿フォーム -->
+          {% if user.is_authenticated %}
+          <form method="post" action="{% url 'strategyapp:add_reply' tweet.id %}" class="mt-3">
+              {% csrf_token %}
+              {{ reply_form.as_p }}  <!-- フォーム全体を表示 -->
+              <button type="submit" class="btn btn-secondary btn-sm mt-2">リプライを投稿</button>
+          </form>
+          {% else %}
+          <p class="text-muted">リプライを投稿するにはログインしてください。</p>
+          {% endif %}
         </div>
       {% empty %}
-        <p>まだツイートがありません。</p>
+      <p>まだツイートがありません。</p>
       {% endfor %}
     </div>
-  </div>
+</div>
 {% endblock %}
