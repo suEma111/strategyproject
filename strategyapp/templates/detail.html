@@ -1,21 +1,61 @@
 {% extends 'base.html' %}
-{% block title %}Strategy Detail{% endblock %}
+
+{% block title %}攻略情報詳細{% endblock %}
 
 {% block contents %}
 <br>
 <div class="container">
     <div class="row">
-        <div class="col offset-3">
-            <h2>{{object.title}}</h2>
+        <div class="col offset-md-2 col-md-8">
+            <!-- 投稿内容 -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">{{ object.title }}</h2>
+                    <p class="card-text">{{ object.comment }}</p>
+                    <p class="text-muted">投稿日時: {{ object.posted_at|date:"Y年m月d日 H:i" }}</p>
 
-            <p>{{object.comment}}</p>
-            <br>
-            <p>{{object.posted_at}}に投稿</p>
-            <p><img src="{{ object.image1.url }}" style="max-width: 300px; height auto;"></p>
+                    {% if object.image1 %}
+                        <p>
+                            <img src="{{ object.image1.url }}" alt="Image 1" class="img-fluid" style="max-width: 300px; height: auto;">
+                        </p>
+                    {% endif %}
+                    
+                    {% if object.image2 %}
+                        <p>
+                            <img src="{{ object.image2.url }}" alt="Image 2" class="img-fluid" style="max-width: 300px; height: auto;">
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
 
-            {% if object.image2 %}
-                <p><img src="{{ object.image2.url }}" style="max-width: 300px; height auto;"></p>
-            {% endif %}
+            <hr>
+
+            <!-- リプライ一覧 -->
+            <div class="replies">
+                <h3>リプライ一覧</h3>
+                <ul>
+                    {% for reply in replies %}
+                        <li>
+                            <strong>{{ reply.user.username }}</strong>: {{ reply.content }}
+                            <small class="text-muted">({{ reply.created_at|date:"Y-m-d H:i" }})</small>
+                        </li>
+                    {% empty %}
+                        <li>まだリプライがありません。</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <hr>
+
+            <!-- リプライフォーム -->
+            <div class="reply-form">
+                <h3>コメントを追加</h3>
+                <form method="post" action="{% url 'strategyapp:strategy_reply' object_id=object.id %}">
+                    {% csrf_token %}
+                    {{ reply_form.as_p }}
+                    <button type="submit" class="btn btn-secondary">リプライを投稿</button>
+                </form>                
+            </div>
         </div>
     </div>
 </div>

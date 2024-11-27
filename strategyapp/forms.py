@@ -2,7 +2,6 @@ from django import forms
 from .models import StrategyPost, Tweet, Reply
 
 class StrategyPostForm(forms.ModelForm):
-
     class Meta:
         model = StrategyPost
         fields = ['title', 'comment', 'image1', 'image2'] 
@@ -43,6 +42,12 @@ class ReplyForm(forms.ModelForm):
     class Meta:
         model = Reply
         fields = ['content']
-        widgets = {
-            'content': forms.Textarea(attrs={'rows': 2, 'class': 'form-control', 'placeholder': 'コメントを入力してください'}),
-        }
+
+    def __init__(self, *args, **kwargs):
+        content_type = kwargs.pop('content_type', None)
+        object_id = kwargs.pop('object_id', None)
+        super().__init__(*args, **kwargs)
+
+        if content_type and object_id:
+            self.instance.content_type = content_type
+            self.instance.object_id = object_id

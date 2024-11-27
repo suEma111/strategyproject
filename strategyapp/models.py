@@ -1,5 +1,8 @@
 from django.db import models
 from accounts.models import CustomUser
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from django.conf import settings
 
 class StrategyPost(models.Model):
 
@@ -42,29 +45,22 @@ class StrategyPost(models.Model):
         return self.title
     
 class Tweet(models.Model):
-    user  = models.ForeignKey(
-        CustomUser,
-        verbose_name="ユーザー",
-        on_delete=models.CASCADE
-    )
-    content = models.TextField(
-        verbose_name="ツイート内容",
-        max_length=280
-    )
-    created_at = models.DateTimeField(
-        verbose_name="投稿日時",
-        auto_now_add=True
-    )
+    user = models.ForeignKey(CustomUser, verbose_name="ユーザー", on_delete=models.CASCADE)
+    content = models.TextField(verbose_name="ツイート内容", max_length=280)
+    created_at = models.DateTimeField(verbose_name="投稿日時", auto_now_add=True)
 
     def __str__(self):
         return self.content[:50]
+
+    # リプライを取得するプロパティは不要
+
+
     
 
 class Reply(models.Model):
-    tweet = models.ForeignKey(Tweet, related_name='replies', on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    content = models.TextField(max_length=280)
+    content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.user.username} - {self.content[:20]}"
