@@ -10,7 +10,7 @@
     <title>Log in</title>
 
     <link rel="icon" type="image/x-icon"
-          href="{% static 'assets/favicon.ico' %}" />
+          href="{% static 'assets/dragon.ico' %}" />
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
           rel="stylesheet"
@@ -31,6 +31,24 @@
           font-size: 3.5rem;
         }
       }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        background-color: #f8f9fa; /* 背景色（任意） */
+    }
+    
+    main.form-sign-in {
+        width: 100%;
+        max-width: 400px; /* フォームの最大幅 */
+        padding: 15px;
+        background: #ffffff; /* フォームの背景色（任意） */
+        border-radius: 8px; /* 角を丸くする（任意） */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ボックスシャドウ（任意） */
+    }
     </style>
 
     
@@ -49,7 +67,7 @@
         {% csrf_token %}
 
         <img class="mb-4"
-             src={% static "img/bootstrap-logo.svg" %}
+             src={% static "img/images (1).jpg" %}
              alt="" width="72"
              height="57">
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>

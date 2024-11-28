@@ -9,6 +9,8 @@
           content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.112.5">
     <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" type="image/x-icon"
+          href={% static 'assets/dragon.ico' %}>
 
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 
@@ -88,7 +90,7 @@
   </head>
   
   <body>
-    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <img src="{% static 'assets/dragon.ico' %}" alt="説明文">
       <symbol id="check2" viewBox="0 0 16 16">
         <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
       </symbol>
@@ -180,7 +182,7 @@
   <div class="navbar navbar-dark bg-dark shadow-sm">
     <div class="container">
       <a href="{% url 'strategyapp:index' %}" class="navbar-brand d-flex align-items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24">
+        <img src="{% static 'assets/dragon.ico' %}" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24">
           <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
           <circle cx="12" cy="13" r="4"/>
         </svg>
