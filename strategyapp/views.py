@@ -91,12 +91,11 @@ class ContactView(FormView):
     form_class = ContactForm  # 使用するフォーム
     success_url = reverse_lazy('strategyapp:contact')  # 成功時のリダイレクト先
 
-    # フォームのバリデーションが成功した場合の処理
     def form_valid(self, form):
         name = form.cleaned_data['name']
         email = form.cleaned_data['email']
-        title = form.cleaned_data['question_title']
-        message = form.cleaned_data['question_detail']
+        title = form.cleaned_data['title']
+        message = form.cleaned_data['message']
         
         # メール送信設定
         subject = 'お問い合わせ：{}'.format(title)
@@ -110,7 +109,14 @@ class ContactView(FormView):
         
         # 成功メッセージを追加
         messages.success(self.request, 'お問い合わせは正常に送信されました')
+        
+        # メッセージが1回だけ表示されるようにリダイレクト
         return super().form_valid(form)
+
+    # リダイレクト後にメッセージを表示しないように
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 # ツイートへのリプライ追加
 @login_required
@@ -159,3 +165,9 @@ def add_strategy_reply(request, object_id):
 
     # POST以外のリクエストが来た場合は攻略情報の詳細に戻る
     return redirect('strategyapp:strategy_detail', pk=content_object.id)
+
+    def form_valid(self, form):
+        tweet = form.save(commit=False)  # フォームのデータを保存前に取得
+        tweet.user = self.request.user  # ログイン中のユーザーを設定
+        tweet.save()  # データを保存
+        return super().form_valid(form)

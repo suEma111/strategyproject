@@ -17,26 +17,23 @@ class TweetForm(forms.ModelForm):
 class ContactForm(forms.Form):
     name = forms.CharField(label='お名前')
     email = forms.CharField(label='メールアドレス')
-    title = forms.CharField(label='件名')
-    message = forms.CharField(label='メッセージ',widget=forms.Textarea)
-    
+    title = forms.CharField(label='件名')  # 'question_title' を 'title' に変更
+    message = forms.CharField(label='メッセージ', widget=forms.Textarea)
+
     def __init__(self, *args, **kwargs):
-        super().__init__(*args,**kwargs)
-        self.fields['name'].widget.attrs['placeholder'] = \
-            '田中  太郎'
-        self.fields['name'].widget.attrs['class'] = 'form-control'
+        super().__init__(*args, **kwargs)
+        # 共通の設定を一箇所で定義
+        field_attributes = {
+            'class': 'form-control',
+            'placeholder': ''
+        }
         
-        self.fields['email'].widget.attrs['placeholder'] = \
-            'abcd@xx.com'
-        self.fields['email'].widget.attrs['class'] = 'form-control'
-        
-        self.fields['title'].widget.attrs['placeholder'] = \
-            'タイトルを入力してください'
-        self.fields['title'].widget.attrs['class'] = 'form-control'
-        
-        self.fields['message'].widget.attrs['placeholder'] = \
-            'メッセージを入力して下さい'
-        self.fields['message'].widget.attrs['class'] = 'form-control'
+        # フィールドごとの個別設定
+        self.fields['name'].widget.attrs.update({'placeholder': '田中  太郎', **field_attributes})
+        self.fields['email'].widget.attrs.update({'placeholder': 'abcd@xx.com', **field_attributes})
+        self.fields['title'].widget.attrs.update({'placeholder': 'タイトルを入力してください', **field_attributes})
+        self.fields['message'].widget.attrs.update({'placeholder': 'メッセージを入力して下さい', **field_attributes})
+
 
 class ReplyForm(forms.ModelForm):
     class Meta:
